@@ -1,0 +1,37 @@
+{
+  "scheme_id": "pmay",
+  "scheme_name": "Pradhan Mantri Awas Yojana",
+  "official_sources": [
+    "https://pmaymis.gov.in/pmaymis2_2024/PmayFAQ.aspx",
+    "https://www.bankbazaar.com/home-loan/pradhan-mantri-awas-yojana-eligibility-criteria.html"
+  ],
+  "assumptions": [
+    "Only EWS slab considered",
+    "Urban and rural variants ignored",
+    "Individual-level eligibility applied"
+  ],
+  "excluded_conditions": [
+    "Ownership of a pucca house anywhere in India",
+    "Prior availing of government housing benefits"
+  ],
+  "conditions": [
+    {
+      "field": "income",
+      "operator": "<=",
+      "value": 300000,
+      "description": "Annual income must be within EWS limit (₹3 lakh)"
+    },
+    {
+      "field": "owns_house",
+      "operator": "==",
+      "value": false,
+      "description": "Applicant must not own a pucca house"
+    },
+    {
+      "field": "age",
+      "operator": ">=",
+      "value": 18,
+      "description": "Applicant must be an adult (≥18 years)"
+    }
+  ]
+}

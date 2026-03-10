@@ -1,0 +1,31 @@
+{
+    "scheme_id": "pmkisan",
+    "scheme_name": "PM-KISAN Samman Nidhi",
+    "official_sources": [
+        "https://www.angelone.in/knowledge-center/savings-schemes/eligibility-for-pm-kisan-samman-nidhi-yojana",
+        "https://www.indiatv.in/paisa/my-profit/pm-kisan-samman-nidhi-minimum-land-to-get-benefits-of-6000-rupees-annually-under-this-scheme-2022-09-25-887103"
+    ],
+    "assumptions": [
+        "Landholding ≤2 hectares used as proxy for small farmer eligibility",
+        "Income used as proxy for exclusion of high-income professionals"
+    ],
+    "excluded_conditions": [
+        "No cultivable land ownership",
+        "Income tax payers and high-income professionals",
+        "Institutional landholders"
+    ],
+    "conditions": [
+        {
+            "field": "land_owned_hectares",
+            "operator": "<=",
+            "value": 2,
+            "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+            "field": "income",
+            "operator": "<=",
+            "value": 250000,
+            "description": "Applicant income must be below exclusion threshold"
+        }
+    ]
+}

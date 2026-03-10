@@ -1,0 +1,30 @@
+{
+    "scheme_id": "nsap",
+    "scheme_name": "National Social Assistance Programme – Old Age Pension",
+    "official_sources": [
+        "https://nsap.nic.in/circular.do?method=aboutus",
+        "https://nsap.nic.in/circular.do?method=faq"
+    ],
+    "assumptions": [
+        "Only old-age pension (IGNOAPS) considered",
+        "BPL status approximated using income threshold"
+    ],
+    "excluded_conditions": [
+        "Age below 60 years",
+        "Non-BPL household"
+    ],
+    "conditions": [
+        {
+            "field": "age",
+            "operator": ">=",
+            "value": 60,
+            "description": "Applicant must be at least 60 years old"
+        },
+        {
+            "field": "income",
+            "operator": "<=",
+            "value": 200000,
+            "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+    ]
+}

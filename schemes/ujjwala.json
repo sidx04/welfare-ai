@@ -1,0 +1,34 @@
+{
+    "scheme_id": "ujjwala",
+    "scheme_name": "Pradhan Mantri Ujjwala Yojana",
+    "official_sources": [
+        "https://www.pmuy.gov.in/faq.html",
+        "https://lowersubansiri.nic.in/scheme/pmuy/"
+    ],
+    "assumptions": [
+        "Gender and household-head constraints ignored",
+        "Category used as proxy for BPL/SECC deprivation"
+    ],
+    "excluded_conditions": [
+        "Existing LPG connection",
+        "Non-BPL and non-vulnerable category households"
+    ],
+    "conditions": [
+        {
+            "field": "owns_lpg",
+            "operator": "==",
+            "value": false,
+            "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+            "field": "category",
+            "operator": "in",
+            "value": [
+                "BPL",
+                "SC",
+                "ST"
+            ],
+            "description": "Applicant must belong to an eligible vulnerable category"
+        }
+    ]
+}

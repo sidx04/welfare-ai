@@ -1,0 +1,34 @@
+{
+    "scheme_id": "pmjay",
+    "scheme_name": "Ayushman Bharat – PM-JAY",
+    "official_sources": [
+        "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2116209",
+        "https://www.myscheme.gov.in/schemes/ab-pmjay"
+    ],
+    "assumptions": [
+        "SECC 2011 eligibility approximated using social category or low-income proxy",
+        "Household-level complexity ignored",
+        "Existing government health insurance treated as exclusion"
+    ],
+    "excluded_conditions": [
+        "Non-SECC deprived households",
+        "Existing government health insurance coverage"
+    ],
+    "conditions": [
+        {
+            "field": "category",
+            "operator": "in",
+            "value": [
+                "SC",
+                "ST"
+            ],
+            "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        },
+        {
+            "field": "has_health_insurance",
+            "operator": "==",
+            "value": false,
+            "description": "Applicant must not have existing government health insurance"
+        }
+    ]
+}
