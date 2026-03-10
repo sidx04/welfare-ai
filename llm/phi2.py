@@ -12,7 +12,7 @@ class Phi2LLM:
         print("Loading Phi-2 model (CPU)...")
         self.model = AutoModelForCausalLM.from_pretrained(
             MODEL_ID,
-            torch_dtype=torch.float32
+            dtype=torch.float32
         )
         self.model.eval()
 
@@ -24,8 +24,12 @@ class Phi2LLM:
                 **inputs,
                 max_new_tokens=max_tokens,
                 do_sample=False,          
-                use_cache=False,          
+                use_cache=False,
+                repetition_penalty=1.2,          
                 pad_token_id=self.tokenizer.eos_token_id
             )
 
-        return self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        generated_tokens = outputs[0][inputs["input_ids"].shape[1]:]
+        return self.tokenizer.decode(generated_tokens, skip_special_tokens=True)    
+
+        # return self.tokenizer.decode(outputs[0], skip_special_tokens=True)

@@ -1,7 +1,9 @@
 from scheme_loader import load_scheme
 from rule_engine import evaluate_scheme
 from llm.phi2 import Phi2LLM
-from llm.prompts import build_explanation_prompt
+from llm.prompts import build_explanation_prompt, format_explanation_block
+from baseline.run_baseline import run_baseline
+from experiment_logging.experiment_logger import log_experiment
 import json
 
 user_profile = {
@@ -15,21 +17,69 @@ user_profile = {
     "has_health_insurance": False
 }
 
-scheme = load_scheme("pmay")
+scheme_id = "pmay"
 
-evaluation = evaluate_scheme(user_profile, scheme)
+scheme = load_scheme(scheme_id)
 
 llm = Phi2LLM()
 
-prompt = build_explanation_prompt(
-    scheme_name=scheme["scheme_name"],
-    evaluation=evaluation
-)
 
+# ------------------------
+# Proposed System
+# ------------------------
 
-print("\n=== Eligibility Result ===")
+evaluation = evaluate_scheme(user_profile, scheme)
+
+# Deterministic structured block — never touches the LLM
+structured_block = format_explanation_block(scheme["scheme_name"], evaluation)
+
+# LLM only generates the brief closing sentence
+prompt = build_explanation_prompt(scheme["scheme_name"], evaluation)
+llm_sentence = llm.generate(prompt, max_tokens=80)
+
+# The prompt ends with "The applicant is" — prepend it back for a full sentence
+full_explanation = "The applicant is " + llm_sentence.strip()
+
+print("\n=== Rule Engine Result ===")
 print(json.dumps(evaluation, indent=2))
 
-print("\n=== Explanation ===")
-explanation = llm.generate(prompt, max_tokens=60)
-print(explanation)
+print("\n=== Explanation (Proposed System) ===")
+print(structured_block)
+print()
+print(full_explanation)
+
+
+# ------------------------
+# Baseline System
+# ------------------------
+
+baseline_output = run_baseline(
+    llm,
+    scheme_id,
+    scheme["scheme_name"],
+    user_profile
+)
+
+print("\n=== Baseline LLM Decision ===")
+print(baseline_output)
+
+
+# ------------------------
+# Experiment Logging
+# ------------------------
+
+model_metadata = {
+    "model": "phi-2",
+    "temperature": 0,
+    "max_tokens": 80
+}
+
+log_experiment(
+    scheme_id=scheme_id,
+    scheme_name=scheme["scheme_name"],
+    user_profile=user_profile,
+    rule_engine_result=evaluation,
+    proposed_system_explanation=full_explanation,
+    baseline_llm_output=baseline_output.strip(),
+    model_metadata=model_metadata
+)

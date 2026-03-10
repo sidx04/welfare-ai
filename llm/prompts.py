@@ -1,52 +1,33 @@
-# def build_explanation_prompt(
-#     scheme_name: str,
-#     user_profile: dict,
-#     evaluation_result: dict
-# ) -> str:
-#     return f"""
-# You are an assistant explaining welfare eligibility decisions.
-# Do NOT change the decision.
-# Do NOT invent rules.
+def format_explanation_block(scheme_name: str, evaluation: dict) -> str:
+    """
+    Deterministically format the structured explanation block from the
+    rule engine's evaluation result. No LLM involved here.
+    """
+    decision = "Not Eligible" if not evaluation["eligible"] else "Eligible"
 
-# Scheme:
-# {scheme_name}
-
-# User Profile:
-# {user_profile}
-
-# Eligibility Decision:
-# {"Eligible" if evaluation_result["eligible"] else "Not Eligible"}
-
-# Rule Evaluation Trace:
-# {evaluation_result["trace"]}
-
-# Explain clearly:
-# 1. Why the user is eligible or not
-# 2. Which conditions passed or failed
-# 3. What could be changed to become eligible (if applicable)
-# """
-
-def build_explanation_prompt(scheme_name: str, evaluation: dict) -> str:
     lines = []
+    lines.append(f"Scheme: {scheme_name}")
+    lines.append(f"Decision: {decision}")
+    lines.append("")
+    lines.append("Evaluation:")
 
     for step in evaluation["trace"]:
         status = "PASSED" if step["passed"] else "FAILED"
-        lines.append(
-            f"- {step['description']} → {status} (actual={step['actual']})"
-        )
+        lines.append(f"  - {step['description']} → {status} (actual={step['actual']})")
 
-    trace_text = "\n".join(lines)
-
-    return f"""
-Explain this welfare eligibility decision.
-
-Scheme: {scheme_name}
-Decision: {"Eligible" if evaluation["eligible"] else "Not Eligible"}
-
-Evaluation:
-{trace_text}
-
-Explain briefly why this decision was made.
-"""
+    return "\n".join(lines)
 
 
+def build_explanation_prompt(scheme_name: str, evaluation: dict) -> str:
+    """
+    Build a completion prompt: the structured block acts as context, and the
+    incomplete final sentence is what Phi-2 will continue as natural language.
+    Using an incomplete sentence ("The applicant is") instead of a complete
+    instruction ("Explain why...") is critical — Phi-2 is a completion model,
+    not an instruction model, so it continues text, not follows commands.
+    """
+    structured_block = format_explanation_block(scheme_name, evaluation)
+
+    return f"""{structured_block}
+
+The applicant is"""
