@@ -1,6 +1,6 @@
 from scheme_loader import load_scheme
 from rule_engine import evaluate_scheme
-from llm.phi2 import Phi2LLM
+from llm.phi3 import Phi3LLM
 from llm.prompts import build_explanation_prompt, format_explanation_block
 from baseline.run_baseline import run_baseline
 from experiment_logging.experiment_logger import log_experiment
@@ -21,7 +21,7 @@ scheme_id = "pmay"
 
 scheme = load_scheme(scheme_id)
 
-llm = Phi2LLM()
+llm = Phi3LLM()
 
 
 # ------------------------
@@ -33,12 +33,10 @@ evaluation = evaluate_scheme(user_profile, scheme)
 # Deterministic structured block — never touches the LLM
 structured_block = format_explanation_block(scheme["scheme_name"], evaluation)
 
-# LLM only generates the brief closing sentence
+# LLM generates a single explanation sentence
 prompt = build_explanation_prompt(scheme["scheme_name"], evaluation)
 llm_sentence = llm.generate(prompt, max_tokens=80)
-
-# The prompt ends with "The applicant is" — prepend it back for a full sentence
-full_explanation = "The applicant is " + llm_sentence.strip()
+full_explanation = llm_sentence.strip()
 
 print("\n=== Rule Engine Result ===")
 print(json.dumps(evaluation, indent=2))
@@ -69,7 +67,7 @@ print(baseline_output)
 # ------------------------
 
 model_metadata = {
-    "model": "phi-2",
+    "model": "phi-3-mini-4k-instruct-4bit",
     "temperature": 0,
     "max_tokens": 80
 }

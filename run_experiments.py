@@ -1,7 +1,7 @@
 """
 run_experiments.py
 ------------------
-Exhaustive experiment runner: sweeps 8 user profiles × 5 schemes (40 total)
+Exhaustive experiment runner: sweeps 8 user profiles x 5 schemes (40 total)
 and appends each result to logs/experiments.jsonl via the existing logger.
 
 Run:
@@ -9,9 +9,11 @@ Run:
     python run_experiments.py
 """
 
+import time
+
 from scheme_loader import load_scheme
 from rule_engine import evaluate_scheme
-from llm.phi2 import Phi2LLM
+from llm.phi3 import Phi3LLM
 from llm.prompts import build_explanation_prompt, format_explanation_block
 from baseline.run_baseline import run_baseline
 from experiment_logging.experiment_logger import log_experiment
@@ -54,7 +56,7 @@ TEST_PROFILES = [
     },
     {
         "_label": "elderly_bpl",
-        # Targets NSAP: age ≥ 60, income ≤ 2L
+        # Targets NSAP: age >= 60, income <= 2L
         "age": 68,
         "income": 120000,
         "category": "BPL",
@@ -66,7 +68,7 @@ TEST_PROFILES = [
     },
     {
         "_label": "young_small_farmer",
-        # Targets PM-KISAN: land ≤ 2ha, low income
+        # Targets PM-KISAN: land <= 2ha, low income
         "age": 26,
         "income": 180000,
         "category": "OBC",
@@ -127,35 +129,43 @@ TEST_PROFILES = [
 ]
 
 MODEL_METADATA = {
-    "model": "phi-2",
+    "model": "phi-3-mini-4k-instruct-4bit",
     "temperature": 0,
     "max_tokens": 80,
 }
 
 # ─────────────────────────────────────────────
-# 3. Load model once — expensive, do it once
+# 3. Pre-strip internal _label keys once
 # ─────────────────────────────────────────────
 
-print("Loading Phi-2 (once for all experiments)...")
-llm = Phi2LLM()
-print("Model ready.\n")
+PROFILES = [
+    (p["_label"], {k: v for k, v in p.items() if not k.startswith("_")})
+    for p in TEST_PROFILES
+]
 
 # ─────────────────────────────────────────────
-# 4. Sweep
+# 4. Load model once — expensive, do it once
 # ─────────────────────────────────────────────
 
-total = len(TEST_PROFILES) * len(SCHEME_IDS)
+print("Loading Phi-3 Mini Instruct (once for all experiments)...")
+llm = Phi3LLM()
+
+# ─────────────────────────────────────────────
+# 5. Sweep
+# ─────────────────────────────────────────────
+
+total = len(PROFILES) * len(SCHEME_IDS)
 counter = 0
+overall_start = time.perf_counter()
+
+print(f"Starting sweep: {len(SCHEME_IDS)} schemes x {len(PROFILES)} profiles = {total} experiments\n")
 
 for scheme_id in SCHEME_IDS:
     scheme = load_scheme(scheme_id)
+    scheme_start = time.perf_counter()
 
-    for profile in TEST_PROFILES:
+    for label, user_profile in PROFILES:
         counter += 1
-        label = profile["_label"]
-
-        # Strip internal label key before passing to rule engine / logger
-        user_profile = {k: v for k, v in profile.items() if not k.startswith("_")}
 
         # --- Rule engine (deterministic) ---
         evaluation = evaluate_scheme(user_profile, scheme)
@@ -163,17 +173,16 @@ for scheme_id in SCHEME_IDS:
 
         # --- Proposed system explanation ---
         prompt = build_explanation_prompt(scheme["scheme_name"], evaluation)
-        llm_sentence = llm.generate(prompt, max_tokens=80)
-        full_explanation = "The applicant is " + llm_sentence.strip()
+        full_explanation = llm.generate(prompt, max_tokens=80).strip()
 
         # --- Baseline LLM ---
         baseline_output = run_baseline(llm, scheme_id, scheme["scheme_name"], user_profile)
 
         # --- Progress ---
         eligible_str = "eligible" if evaluation["eligible"] else "NOT eligible"
-        print(f"[{counter}/{total}] {scheme_id} × {label} → {eligible_str}")
+        print(f"  [{counter:>2}/{total}] {scheme_id} x {label:<25} -> {eligible_str}")
 
-        # --- Log ---
+        # --- Log (silent: no per-record print inside the sweep) ---
         log_experiment(
             scheme_id=scheme_id,
             scheme_name=scheme["scheme_name"],
@@ -182,6 +191,11 @@ for scheme_id in SCHEME_IDS:
             proposed_system_explanation=full_explanation,
             baseline_llm_output=baseline_output.strip(),
             model_metadata=MODEL_METADATA,
+            verbose=False,
         )
 
-print(f"\nDone. {total} experiments logged → logs/experiments.jsonl")
+    scheme_elapsed = time.perf_counter() - scheme_start
+    print(f"  => {scheme_id} done in {scheme_elapsed:.1f}s\n")
+
+overall_elapsed = time.perf_counter() - overall_start
+print(f"Done. {total} experiments logged -> logs/experiments.jsonl  ({overall_elapsed:.1f}s total)")

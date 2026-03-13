@@ -1,6 +1,6 @@
 from baseline.llm_baseline import build_baseline_prompt
 from baseline.scheme_descriptions import SCHEME_DESCRIPTIONS
-from llm.phi2 import Phi2LLM
+from llm.phi3 import Phi3LLM
 
 
 def run_baseline(llm, scheme_id, scheme_name, user_profile):

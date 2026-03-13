@@ -13,21 +13,25 @@ def format_explanation_block(scheme_name: str, evaluation: dict) -> str:
 
     for step in evaluation["trace"]:
         status = "PASSED" if step["passed"] else "FAILED"
-        lines.append(f"  - {step['description']} → {status} (actual={step['actual']})")
+        lines.append(f"  - {step['description']} -> {status} (actual={step['actual']})")
 
     return "\n".join(lines)
 
 
 def build_explanation_prompt(scheme_name: str, evaluation: dict) -> str:
     """
-    Build a completion prompt: the structured block acts as context, and the
-    incomplete final sentence is what Phi-2 will continue as natural language.
-    Using an incomplete sentence ("The applicant is") instead of a complete
-    instruction ("Explain why...") is critical — Phi-2 is a completion model,
-    not an instruction model, so it continues text, not follows commands.
+    Build an instruction prompt for Phi-3 Mini Instruct.
+
+    The structured block provides deterministic context; the model is
+    asked to produce a single plain-English summary sentence.  Phi-3 is
+    an instruction-tuned model — the chat template and system role are
+    applied inside Phi3LLM.generate(), so this function just returns the
+    user-facing task description.
     """
     structured_block = format_explanation_block(scheme_name, evaluation)
 
-    return f"""{structured_block}
-
-The applicant is"""
+    return (
+        f"{structured_block}\n\n"
+        "In one sentence, explain whether the applicant is eligible and the "
+        "main reason why or why not."
+    )

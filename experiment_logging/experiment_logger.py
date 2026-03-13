@@ -15,6 +15,7 @@ def log_experiment(
     proposed_system_explanation: str,
     baseline_llm_output: str,
     model_metadata: dict,
+    verbose: bool = True,
 ) -> None:
     """
     Append a single experiment record to logs/experiments.jsonl.
@@ -22,6 +23,10 @@ def log_experiment(
     Creates the logs/ directory if it does not already exist.
     Each record is written as one JSON line (JSONL format) so the
     file remains streamable and pandas-compatible.
+
+    Args:
+        verbose: If False, suppresses the per-record confirmation print.
+                 Set to False during batch sweeps to keep output clean.
     """
     os.makedirs(LOGS_DIR, exist_ok=True)
 
@@ -39,4 +44,5 @@ def log_experiment(
     with open(EXPERIMENTS_LOG, "a", encoding="utf-8") as f:
         f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
-    print(f"[logger] Experiment record appended → {EXPERIMENTS_LOG}")
+    if verbose:
+        print(f"[logger] Experiment record appended -> {EXPERIMENTS_LOG}")
