@@ -1,0 +1,4900 @@
+{
+  "total": 622,
+  "unparsable": 0,
+  "proposed_accuracy": 1.0,
+  "baseline_accuracy": 0.7701,
+  "baseline_hallucination_rate": 0.2299,
+  "proposed_hallucination_rate": 0.0,
+  "proposed_faithfulness": 1.0,
+  "baseline_faithfulness": 0.9453,
+  "per_scheme": {
+    "Pradhan Mantri Awas Yojana": {
+      "total": 126,
+      "baseline_correct": 110,
+      "hallucinations": 16,
+      "baseline_accuracy": 0.873
+    },
+    "Ayushman Bharat – PM-JAY": {
+      "total": 124,
+      "baseline_correct": 92,
+      "hallucinations": 32,
+      "baseline_accuracy": 0.7419
+    },
+    "National Social Assistance Programme – Old Age Pension": {
+      "total": 124,
+      "baseline_correct": 112,
+      "hallucinations": 12,
+      "baseline_accuracy": 0.9032
+    },
+    "Pradhan Mantri Ujjwala Yojana": {
+      "total": 124,
+      "baseline_correct": 82,
+      "hallucinations": 42,
+      "baseline_accuracy": 0.6613
+    },
+    "PM-KISAN Samman Nidhi": {
+      "total": 124,
+      "baseline_correct": 83,
+      "hallucinations": 41,
+      "baseline_accuracy": 0.6694
+    }
+  },
+  "hallucination_cases": [
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 35,
+        "income": 450000,
+        "category": "SC",
+        "state": "Karnataka",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income and ownership criteria.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 450000,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 68,
+        "income": 120000,
+        "category": "BPL",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 26,
+        "income": 180000,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.8,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 30,
+        "income": 300000,
+        "category": "SC",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.8,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the SC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.8,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 300000,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 16,
+        "income": 100000,
+        "category": "SC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to not owning any land.",
+      "proposed_text": "The applicant is eligible for PM-KISAN Samman Nidhi as they are a small landholding farmer with an income below the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.3,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 100000,
+          "passed": true,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 68,
+        "income": 120000,
+        "category": "BPL",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 26,
+        "income": 180000,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.8,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 30,
+        "income": 300000,
+        "category": "SC",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.8,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the SC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.8,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 300000,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 16,
+        "income": 100000,
+        "category": "SC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to not owning any land.",
+      "proposed_text": "The applicant is eligible for PM-KISAN Samman Nidhi as they are a small landholding farmer with an income below the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.3,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 100000,
+          "passed": true,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 68,
+        "income": 120000,
+        "category": "BPL",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 26,
+        "income": 180000,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.8,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 30,
+        "income": 300000,
+        "category": "SC",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.8,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the SC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.8,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 300000,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 16,
+        "income": 100000,
+        "category": "SC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to not owning any land.",
+      "proposed_text": "The applicant is eligible for PM-KISAN Samman Nidhi as they are a small landholding farmer with an income below the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.3,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 100000,
+          "passed": true,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 35,
+        "income": 450000,
+        "category": "SC",
+        "state": "Karnataka",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income and ownership criteria.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 450000,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 34,
+        "income": 330568,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.49,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana because their annual income is below the threshold and they do not own a permanent house in India.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 330568,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 52,
+        "income": 115775,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.45,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for Pradhan Mantri Awas Yojana due to exceeding the annual income limit.",
+      "proposed_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana scheme because they meet the income criteria, do not own a pucca house, and are above 18 years of age.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 115775,
+          "passed": true,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        },
+        {
+          "field": "owns_house",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not own a pucca house"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 18,
+          "actual": 52,
+          "passed": true,
+          "description": "Applicant must be an adult (≥18 years)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 45,
+        "income": 441084,
+        "category": "BPL",
+        "state": "TN",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.92,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income and ownership criteria.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 441084,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 47,
+        "income": 113082,
+        "category": "ST",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.11,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for Pradhan Mantri Awas Yojana due to exceeding the annual income limit.",
+      "proposed_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana scheme because they meet the income criteria, do not own a pucca house, and are above 18 years of age.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 113082,
+          "passed": true,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        },
+        {
+          "field": "owns_house",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not own a pucca house"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 18,
+          "actual": 47,
+          "passed": true,
+          "description": "Applicant must be an adult (≥18 years)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 77,
+        "income": 657339,
+        "category": "BPL",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.62,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income criteria and not owning a permanent house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 657339,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 60,
+        "income": 103425,
+        "category": "OBC",
+        "state": "Assam",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.39,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for Pradhan Mantri Awas Yojana due to exceeding the annual income limit.",
+      "proposed_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana scheme because they meet the income criteria, do not own a pucca house, and are above 18 years of age.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 103425,
+          "passed": true,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        },
+        {
+          "field": "owns_house",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not own a pucca house"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 18,
+          "actual": 60,
+          "passed": true,
+          "description": "Applicant must be an adult (≥18 years)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 45,
+        "income": 1802235,
+        "category": "OBC",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 9.08,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income criteria and not owning a permanent house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 1802235,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 28,
+        "income": 1134291,
+        "category": "SC",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.72,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income criteria and not owning a permanent house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 1134291,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 19,
+        "income": 623108,
+        "category": "General",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.93,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana because their annual income is above the threshold and they do not own a permanent house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 623108,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 48,
+        "income": 194965,
+        "category": "General",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.68,
+        "has_health_insurance": true
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to exceeding the annual income limit.",
+      "proposed_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana scheme because they meet the income criteria, do not own a pucca house, and are an adult.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 194965,
+          "passed": true,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        },
+        {
+          "field": "owns_house",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not own a pucca house"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 18,
+          "actual": 48,
+          "passed": true,
+          "description": "Applicant must be an adult (≥18 years)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 44,
+        "income": 1926367,
+        "category": "ST",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.53,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income and ownership criteria.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 1926367,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 69,
+        "income": 341394,
+        "category": "SC",
+        "state": "Jharkhand",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.16,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income criteria and not owning a permanent house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 341394,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 30,
+        "income": 1532706,
+        "category": "ST",
+        "state": "Gujarat",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.94,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Pradhan Mantri Awas Yojana due to meeting the income criteria and not owning a permanent house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Awas Yojana due to an annual income exceeding the EWS limit.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 1532706,
+          "passed": false,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Awas Yojana",
+      "scheme_id": "pmay",
+      "profile": {
+        "age": 69,
+        "income": 110841,
+        "category": "OBC",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 4.25,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for Pradhan Mantri Awas Yojana due to exceeding the annual income limit.",
+      "proposed_text": "The applicant is eligible for the Pradhan Mantri Awas Yojana scheme because they meet the income criteria, do not own a pucca house, and are above 18 years of age.",
+      "rule_trace": [
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 300000,
+          "actual": 110841,
+          "passed": true,
+          "description": "Annual income must be within EWS limit (₹3 lakh)"
+        },
+        {
+          "field": "owns_house",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not own a pucca house"
+        },
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 18,
+          "actual": 69,
+          "passed": true,
+          "description": "Applicant must be an adult (≥18 years)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 45,
+        "income": 441084,
+        "category": "BPL",
+        "state": "TN",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.92,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 77,
+        "income": 657339,
+        "category": "BPL",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.62,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 60,
+        "income": 103425,
+        "category": "OBC",
+        "state": "Assam",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.39,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 23,
+        "income": 124981,
+        "category": "BPL",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 45,
+        "income": 1802235,
+        "category": "OBC",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 9.08,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 25,
+        "income": 250000,
+        "category": "BPL",
+        "state": "West Bengal",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 4.4,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 56,
+        "income": 165625,
+        "category": "BPL",
+        "state": "Maharashtra",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.17,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 72,
+        "income": 1265203,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.99,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being an OBC without government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 65,
+        "income": 1098418,
+        "category": "OBC",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.22,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being an OBC without government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 15,
+        "income": 137147,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.41,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 46,
+        "income": 250000,
+        "category": "BPL",
+        "state": "Karnataka",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.0,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 64,
+        "income": 150969,
+        "category": "BPL",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.56,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 69,
+        "income": 110841,
+        "category": "OBC",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 4.25,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 17,
+        "income": 126509,
+        "category": "BPL",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.27,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 17,
+        "income": 113892,
+        "category": "OBC",
+        "state": "Jharkhand",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 18,
+        "income": 329811,
+        "category": "OBC",
+        "state": "MP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.18,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 16,
+        "income": 139096,
+        "category": "BPL",
+        "state": "Assam",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.1,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 65,
+        "income": 158459,
+        "category": "OBC",
+        "state": "Maharashtra",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.76,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being an OBC without government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 13,
+        "income": 112601,
+        "category": "OBC",
+        "state": "Maharashtra",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 49,
+        "income": 151416,
+        "category": "BPL",
+        "state": "Maharashtra",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 7.25,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 21,
+        "income": 186396,
+        "category": "BPL",
+        "state": "TN",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.28,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 18,
+        "income": 294388,
+        "category": "OBC",
+        "state": "Karnataka",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.86,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 41,
+        "income": 130211,
+        "category": "BPL",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.81,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 19,
+        "income": 318174,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.89,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 19,
+        "income": 262457,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.06,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to being from the OBC category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY because they do not belong to the Scheduled Castes (SC) or Scheduled Tribes (ST), which is a mandatory criterion for eligibility.",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "Ayushman Bharat – PM-JAY",
+      "scheme_id": "pmjay",
+      "profile": {
+        "age": 49,
+        "income": 110101,
+        "category": "BPL",
+        "state": "Gujarat",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.84,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for Ayushman Bharat – PM-JAY due to belonging to the BPL category and not having government health insurance.",
+      "proposed_text": "The applicant is not eligible for Ayushman Bharat – PM-JAY due to being categorized as Below Poverty Line (BPL).",
+      "rule_trace": [
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "SC",
+            "ST"
+          ],
+          "actual": "BPL",
+          "passed": false,
+          "description": "Applicant belongs to a vulnerable social category (SC/ST)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 76,
+        "income": 352797,
+        "category": "OBC",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.83,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to an OBC household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 76,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 352797,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 79,
+        "income": 578717,
+        "category": "SC",
+        "state": "Assam",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.24,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to a below poverty line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 79,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 578717,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 77,
+        "income": 657339,
+        "category": "BPL",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.62,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being over 60 years old and belonging to a BPL household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 77,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 657339,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 69,
+        "income": 261978,
+        "category": "SC",
+        "state": "Bihar",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.94,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to a below poverty line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 69,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 261978,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 72,
+        "income": 1265203,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.99,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being over 60 years old and belonging to an OBC household below the poverty line.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 72,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 1265203,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 66,
+        "income": 271021,
+        "category": "OBC",
+        "state": "Assam",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.62,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to an OBC household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 66,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 271021,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 65,
+        "income": 1098418,
+        "category": "OBC",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.22,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to an OBC household below the poverty line.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 65,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 1098418,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 60,
+        "income": 514338,
+        "category": "General",
+        "state": "Kerala",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 3.65,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being 60 years old and belonging to a below poverty line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 60,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 514338,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 69,
+        "income": 341394,
+        "category": "SC",
+        "state": "Jharkhand",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.16,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to a below poverty line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 69,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 341394,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 64,
+        "income": 347737,
+        "category": "ST",
+        "state": "Gujarat",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 9.58,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to a below poverty line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 64,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 347737,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 60,
+        "income": 282940,
+        "category": "General",
+        "state": "Maharashtra",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.64,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being 60 years old and belonging to a below poverty line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to not belonging to a poverty-level household.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 60,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 282940,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "National Social Assistance Programme – Old Age Pension",
+      "scheme_id": "nsap",
+      "profile": {
+        "age": 66,
+        "income": 254465,
+        "category": "ST",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.24,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the National Social Assistance Programme – Old Age Pension due to being above 60 years of age and belonging to a Below Poverty Line household.",
+      "proposed_text": "The applicant is not eligible for the National Social Assistance Programme – Old Age Pension due to their household income exceeding the poverty threshold.",
+      "rule_trace": [
+        {
+          "field": "age",
+          "operator": ">=",
+          "required": 60,
+          "actual": 66,
+          "passed": true,
+          "description": "Applicant must be at least 60 years old"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 200000,
+          "actual": 254465,
+          "passed": false,
+          "description": "Applicant must belong to a poverty-level household (income proxy)"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 34,
+        "income": 330568,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.49,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the General category, live in Odisha, and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 55,
+        "income": 60240,
+        "category": "ST",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.02,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 32,
+        "income": 223184,
+        "category": "OBC",
+        "state": "West Bengal",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 3.28,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the OBC category and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 43,
+        "income": 360322,
+        "category": "General",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.41,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the General category, own a house, and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 49,
+        "income": 305003,
+        "category": "ST",
+        "state": "Maharashtra",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.82,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 21,
+        "income": 121770,
+        "category": "General",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.29,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the general category, have no LPG connection, and are from a BPL state.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 53,
+        "income": 730152,
+        "category": "ST",
+        "state": "Maharashtra",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.93,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house but do not have an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 60,
+        "income": 103425,
+        "category": "OBC",
+        "state": "Assam",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.39,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to being an OBC household without an LPG connection in Assam.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 59,
+        "income": 1039895,
+        "category": "ST",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 3.33,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 21,
+        "income": 132428,
+        "category": "ST",
+        "state": "Assam",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.61,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house but do not have an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 52,
+        "income": 151857,
+        "category": "ST",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.87,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 28,
+        "income": 1134291,
+        "category": "SC",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.72,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 28,
+        "income": 1680283,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.22,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the General category, own a house, and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 19,
+        "income": 623108,
+        "category": "General",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.93,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the General category, have no LPG connection, and are from a BPL state.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 18,
+        "income": 421205,
+        "category": "ST",
+        "state": "Karnataka",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.66,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house with an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 72,
+        "income": 1265203,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 2.99,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to being an OBC household without an LPG connection and belonging to a vulnerable category.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 44,
+        "income": 1926367,
+        "category": "ST",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.53,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 14,
+        "income": 280943,
+        "category": "ST",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.88,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 31,
+        "income": 304471,
+        "category": "OBC",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 3.87,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 32,
+        "income": 262022,
+        "category": "OBC",
+        "state": "Karnataka",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.42,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 26,
+        "income": 412599,
+        "category": "SC",
+        "state": "Jharkhand",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 9.23,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and own a house but do not have an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 69,
+        "income": 341394,
+        "category": "SC",
+        "state": "Jharkhand",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.16,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 35,
+        "income": 314281,
+        "category": "General",
+        "state": "West Bengal",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.96,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the general category, own a house, and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 15,
+        "income": 137147,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.41,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 48,
+        "income": 334809,
+        "category": "General",
+        "state": "Haryana",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.41,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the General category, own a house, and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 48,
+        "income": 226368,
+        "category": "SC",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.64,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the SC category and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 56,
+        "income": 1155788,
+        "category": "OBC",
+        "state": "Odisha",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 3.36,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to being an OBC household without an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 69,
+        "income": 110841,
+        "category": "OBC",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 4.25,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to being an OBC household without an LPG connection and belonging to a vulnerable category.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 17,
+        "income": 113892,
+        "category": "OBC",
+        "state": "Jharkhand",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 18,
+        "income": 329811,
+        "category": "OBC",
+        "state": "MP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.18,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 33,
+        "income": 1472735,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 9.17,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 13,
+        "income": 112601,
+        "category": "OBC",
+        "state": "Maharashtra",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 57,
+        "income": 391707,
+        "category": "SC",
+        "state": "Odisha",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.52,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the SC category and not having an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 21,
+        "income": 186396,
+        "category": "BPL",
+        "state": "TN",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 2.28,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the BPL category and own a house.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 47,
+        "income": 1875853,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 5.44,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the General category, own a house, and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "General",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 18,
+        "income": 294388,
+        "category": "OBC",
+        "state": "Karnataka",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.86,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to being an OBC household without an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 44,
+        "income": 360627,
+        "category": "OBC",
+        "state": "TN",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.26,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 39,
+        "income": 153930,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.76,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 39,
+        "income": 250000,
+        "category": "OBC",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.88,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 19,
+        "income": 318174,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.89,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to belonging to the OBC category and not having an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 19,
+        "income": 262457,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.06,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme due to being an OBC household without an LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to not belonging to an eligible vulnerable category.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": false,
+          "passed": true,
+          "description": "Applicant must not have an existing LPG connection"
+        },
+        {
+          "field": "category",
+          "operator": "in",
+          "required": [
+            "BPL",
+            "SC",
+            "ST"
+          ],
+          "actual": "OBC",
+          "passed": false,
+          "description": "Applicant must belong to an eligible vulnerable category"
+        }
+      ]
+    },
+    {
+      "scheme": "Pradhan Mantri Ujjwala Yojana",
+      "scheme_id": "ujjwala",
+      "profile": {
+        "age": 49,
+        "income": 110101,
+        "category": "BPL",
+        "state": "Gujarat",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.84,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for the Pradhan Mantri Ujjwala Yojana scheme because they belong to the BPL category and do not have an existing LPG connection.",
+      "proposed_text": "The applicant is not eligible for the Pradhan Mantri Ujjwala Yojana scheme due to the presence of an existing LPG connection.",
+      "rule_trace": [
+        {
+          "field": "owns_lpg",
+          "operator": "==",
+          "required": false,
+          "actual": true,
+          "passed": false,
+          "description": "Applicant must not have an existing LPG connection"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 34,
+        "income": 330568,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.49,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the 2-hectare limit and not belonging to a high-income profession.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.49,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 330568,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 76,
+        "income": 352797,
+        "category": "OBC",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.83,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.83,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 352797,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 44,
+        "income": 330911,
+        "category": "ST",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.37,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to a Scheduled Tribe (ST).",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to an income above the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.37,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 330911,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 45,
+        "income": 441084,
+        "category": "BPL",
+        "state": "TN",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.92,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a BPL farmer with landholding less than 2 hectares.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.92,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 441084,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 43,
+        "income": 360322,
+        "category": "General",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.41,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land under 2 hectares and being a general category farmer.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.41,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 360322,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 46,
+        "income": 300000,
+        "category": "General",
+        "state": "West Bengal",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.32,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the specified limit and being a general category farmer.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.32,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 300000,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 79,
+        "income": 578717,
+        "category": "SC",
+        "state": "Assam",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.24,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the Scheduled Caste category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.24,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 578717,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 53,
+        "income": 256985,
+        "category": "SC",
+        "state": "Jharkhand",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.42,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the SC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.42,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 256985,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 43,
+        "income": 133809,
+        "category": "General",
+        "state": "Maharashtra",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.03,
+        "has_health_insurance": true
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to insufficient landholding.",
+      "proposed_text": "The applicant is eligible for PM-KISAN Samman Nidhi as they are a small landholding farmer with an income below the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.03,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 133809,
+          "passed": true,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 77,
+        "income": 657339,
+        "category": "BPL",
+        "state": "Haryana",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.62,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a BPL category farmer with landholding less than 2 hectares.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.62,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 657339,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 53,
+        "income": 730152,
+        "category": "ST",
+        "state": "Maharashtra",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.93,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to a Scheduled Tribe.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.93,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 730152,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 28,
+        "income": 1134291,
+        "category": "SC",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.72,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the Scheduled Caste category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.72,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 1134291,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 28,
+        "income": 1680283,
+        "category": "General",
+        "state": "Odisha",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.22,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the specified limit and being in the general category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.22,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 1680283,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 19,
+        "income": 623108,
+        "category": "General",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.93,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the 2-hectare limit and not belonging to a high-income profession.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.93,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 623108,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 18,
+        "income": 421205,
+        "category": "ST",
+        "state": "Karnataka",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.66,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to a Scheduled Tribe.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.66,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 421205,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 26,
+        "income": 384427,
+        "category": "ST",
+        "state": "UP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.85,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to a Scheduled Tribe (ST).",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.85,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 384427,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 44,
+        "income": 1926367,
+        "category": "ST",
+        "state": "Kerala",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.53,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to a Scheduled Tribe (ST).",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.53,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 1926367,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 66,
+        "income": 271021,
+        "category": "OBC",
+        "state": "Assam",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 1.62,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.62,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 271021,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 65,
+        "income": 1098418,
+        "category": "OBC",
+        "state": "Odisha",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.22,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.22,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 1098418,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 14,
+        "income": 280943,
+        "category": "ST",
+        "state": "West Bengal",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.88,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to a Scheduled Tribe (ST).",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.88,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 280943,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 18,
+        "income": 315393,
+        "category": "ST",
+        "state": "Rajasthan",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.87,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to a Scheduled Tribe.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.87,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 315393,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 32,
+        "income": 262022,
+        "category": "OBC",
+        "state": "Karnataka",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.42,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.42,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 262022,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 56,
+        "income": 345682,
+        "category": "ST",
+        "state": "Punjab",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.5,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the Scheduled Tribe category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.5,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 345682,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 35,
+        "income": 314281,
+        "category": "General",
+        "state": "West Bengal",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.96,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the 2-hectare limit and being in the General category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.96,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 314281,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 48,
+        "income": 334809,
+        "category": "General",
+        "state": "Haryana",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.41,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the 2-hectare limit and being in the General category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.41,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 334809,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 30,
+        "income": 1532706,
+        "category": "ST",
+        "state": "Gujarat",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.94,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to a Scheduled Tribe (ST).",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.94,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 1532706,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 17,
+        "income": 113892,
+        "category": "OBC",
+        "state": "Jharkhand",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.3,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to not owning any land.",
+      "proposed_text": "The applicant is eligible for PM-KISAN Samman Nidhi as they are a small landholding farmer with an income below the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.3,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 113892,
+          "passed": true,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 52,
+        "income": 328978,
+        "category": "ST",
+        "state": "Gujarat",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.94,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to a Scheduled Tribe.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.94,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 328978,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 18,
+        "income": 329811,
+        "category": "OBC",
+        "state": "MP",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.18,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.18,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 329811,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 16,
+        "income": 139096,
+        "category": "BPL",
+        "state": "Assam",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.1,
+        "has_health_insurance": false
+      },
+      "ground_truth": true,
+      "baseline_pred": false,
+      "baseline_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to not owning any land.",
+      "proposed_text": "The applicant is eligible for PM-KISAN Samman Nidhi as they are a small landholding farmer with an income below the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.1,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 139096,
+          "passed": true,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 18,
+        "income": 294388,
+        "category": "OBC",
+        "state": "Karnataka",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.86,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.86,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 294388,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 44,
+        "income": 360627,
+        "category": "OBC",
+        "state": "TN",
+        "owns_house": false,
+        "owns_lpg": false,
+        "land_owned_hectares": 0.26,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the specified limit and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.26,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 360627,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 60,
+        "income": 282940,
+        "category": "General",
+        "state": "Maharashtra",
+        "owns_house": false,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.64,
+        "has_health_insurance": true
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to owning land within the 2-hectare limit and being in the General category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.64,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 282940,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 19,
+        "income": 318174,
+        "category": "OBC",
+        "state": "Punjab",
+        "owns_house": true,
+        "owns_lpg": true,
+        "land_owned_hectares": 0.89,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding less than 2 hectares and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to exceeding the income threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 0.89,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 318174,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    },
+    {
+      "scheme": "PM-KISAN Samman Nidhi",
+      "scheme_id": "pmkisan",
+      "profile": {
+        "age": 19,
+        "income": 262457,
+        "category": "OBC",
+        "state": "Kerala",
+        "owns_house": true,
+        "owns_lpg": false,
+        "land_owned_hectares": 1.06,
+        "has_health_insurance": false
+      },
+      "ground_truth": false,
+      "baseline_pred": true,
+      "baseline_text": "The applicant is eligible for PM-KISAN Samman Nidhi due to being a small farmer with landholding within the specified limit and belonging to the OBC category.",
+      "proposed_text": "The applicant is not eligible for PM-KISAN Samman Nidhi due to their income exceeding the exclusion threshold.",
+      "rule_trace": [
+        {
+          "field": "land_owned_hectares",
+          "operator": "<=",
+          "required": 2,
+          "actual": 1.06,
+          "passed": true,
+          "description": "Applicant must be a small landholding farmer (≤2 hectares)"
+        },
+        {
+          "field": "income",
+          "operator": "<=",
+          "required": 250000,
+          "actual": 262457,
+          "passed": false,
+          "description": "Applicant income must be below exclusion threshold"
+        }
+      ]
+    }
+  ]
+}
