@@ -23,24 +23,25 @@ import numpy as np
 
 # ── Style ────────────────────────────────────────────────────────────────────
 plt.rcParams.update({
-    "figure.facecolor": "#0f1117",
-    "axes.facecolor": "#1a1d27",
-    "axes.edgecolor": "#3a3d4d",
-    "axes.labelcolor": "#d0d3e8",
-    "xtick.color": "#9093a8",
-    "ytick.color": "#9093a8",
-    "text.color": "#d0d3e8",
-    "grid.color": "#2a2d3d",
-    "grid.alpha": 0.5,
+    "figure.facecolor": "#ffffff",    # pure white
+    "axes.facecolor": "#ffffff",      # pure white
+    "axes.edgecolor": "#d1d5db",      # light gray border
+    "axes.labelcolor": "#1f2937",     # dark gray labels
+    "xtick.color": "#4b5563",         # medium gray ticks
+    "ytick.color": "#4b5563",         # medium gray ticks
+    "text.color": "#111827",          # near-black text
+    "grid.color": "#e5e7eb",          # very light gray grid
+    "grid.alpha": 0.85,                # slightly more visible for light mode
     "font.family": "DejaVu Sans",
     "axes.spines.top": False,
     "axes.spines.right": False,
 })
 
-PROPOSED_COLOR = "#4f9cf9"   # vivid blue
-BASELINE_COLOR = "#f97b4f"   # vivid orange-red
-ACCENT_GOOD    = "#4ade80"   # green for good bars
-ACCENT_BAD     = "#f87171"   # red for bad bars
+# Refined colors for better contrast on white backgrounds
+PROPOSED_COLOR = "#2563eb"   # deeper, professional blue
+BASELINE_COLOR = "#ea580c"   # rich burnt orange
+ACCENT_GOOD    = "#16a34a"   # forest green (readable on white)
+ACCENT_BAD     = "#dc2626"   # strong red (readable on white)
 
 # ── Load results ─────────────────────────────────────────────────────────────
 results_path = os.path.join(os.path.dirname(__file__), "results.json")
@@ -66,7 +67,7 @@ def bar_labels(ax, rects, fmt="{:.1f}%", color="white", offset=0.4):
 
 # ── Chart 1: Overall Decision Accuracy ───────────────────────────────────────
 fig, ax = plt.subplots(figsize=(7, 5))
-fig.patch.set_facecolor("#0f1117")
+fig.patch.set_facecolor("#eeeeee")
 
 systems  = ["Rule Engine\n+ LLM (Proposed)", "LLM Baseline"]
 accuracies = [
@@ -106,7 +107,7 @@ print(f"Saved: {out}")
 
 # ── Chart 2: Hallucination Rate ───────────────────────────────────────────────
 fig, ax = plt.subplots(figsize=(7, 5))
-fig.patch.set_facecolor("#0f1117")
+fig.patch.set_facecolor("#eeeeee")
 
 rates = [
     data["proposed_hallucination_rate"] * 100,
@@ -152,7 +153,7 @@ short  = [short[i]  for i in order]
 b_accs = [b_accs[i] for i in order]
 
 fig, ax = plt.subplots(figsize=(8, 5))
-fig.patch.set_facecolor("#0f1117")
+fig.patch.set_facecolor("#eeeeee")
 
 colors_bar = [ACCENT_GOOD if v >= 80 else BASELINE_COLOR for v in b_accs]
 y = np.arange(len(short))
@@ -183,7 +184,7 @@ print(f"Saved: {out}")
 h_counts = [scheme_data[schemes[i]]["hallucinations"] for i in order]
 
 fig, ax = plt.subplots(figsize=(8, 5))
-fig.patch.set_facecolor("#0f1117")
+fig.patch.set_facecolor("#eeeeee")
 
 colors_h = [ACCENT_BAD if v > 0 else ACCENT_GOOD for v in h_counts]
 hbars = ax.barh(y, h_counts, height=0.5, color=colors_h, edgecolor="none", zorder=3)
