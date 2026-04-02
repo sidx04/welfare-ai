@@ -69,7 +69,7 @@ print(baseline_output)
 model_metadata = {
     "model": "phi-3-mini-4k-instruct-4bit",
     "temperature": 0,
-    "max_tokens": 80
+    "max_tokens": 256
 }
 
 log_experiment(

@@ -41,7 +41,7 @@ SCHEME_IDS = ["pmay", "pmjay", "nsap", "ujjwala", "pmkisan"]
 MODEL_METADATA = {
     "model": "phi-3-mini-4k-instruct-4bit",
     "temperature": 0,
-    "max_tokens": 80,
+    "max_tokens": 256,
 }
 
 # ─────────────────────────────────────────────────────────────

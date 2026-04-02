@@ -29,7 +29,7 @@ class Phi3LLM:
         self.model, self.tokenizer = load(MODEL_ID)
         print("Model ready.\n")
 
-    def generate(self, prompt: str, max_tokens: int = 80) -> str:
+    def generate(self, prompt: str, max_tokens: int = 256) -> str:
         """
         Wrap `prompt` in Phi-3's chat template and generate a completion.
 

@@ -5,3 +5,6 @@ bitsandbytes
 sentencepiece
 mlx
 mlx-lm
+pydantic
+fastapi
+uvicorn

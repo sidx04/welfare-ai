@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Explainable Eligibility Engine</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Oat UI -->
+  <link rel="stylesheet" href="https://unpkg.com/@knadh/oat/oat.min.css">
+  <script src="https://unpkg.com/@knadh/oat/oat.min.js" defer></script>
+
+  <!-- Your JS -->
+  <script src="app.js" defer></script>
+
+  <style>
+    body {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Explainable Eligibility Checker</h1>
+  <p>Hybrid rule-based + LLM system for welfare schemes</p>
+
+  <hr>
+
+  <form id="form">
+    <fieldset>
+      <legend>User Profile</legend>
+
+      <label>Age</label>
+      <input type="number" id="age" value="35" required>
+
+      <label>Income</label>
+      <input type="number" id="income" value="450000" required>
+
+      <label>Category</label>
+      <select id="category">
+        <option>SC</option>
+        <option>ST</option>
+        <option>OBC</option>
+        <option>General</option>
+      </select>
+
+      <label>State</label>
+      <input type="text" id="state" value="Karnataka">
+
+      <label>
+        <input type="checkbox" id="owns_house"> Owns House
+      </label>
+
+      <label>
+        <input type="checkbox" id="owns_lpg"> Owns LPG
+      </label>
+
+      <label>Land Owned (hectares)</label>
+      <input type="number" step="0.1" id="land" value="1.5">
+
+      <label>
+        <input type="checkbox" id="insurance"> Has Health Insurance
+      </label>
+
+      <label>Scheme</label>
+      <select id="scheme">
+        <option value="pmay">PMAY</option>
+        <option value="pmjay">PM-JAY</option>
+        <option value="nsap">NSAP</option>
+        <option value="ujjwala">Ujjwala</option>
+        <option value="pmkisan">PM-KISAN</option>
+      </select>
+
+      <br><br>
+
+      <button type="submit">Run Proposed System</button>
+      <button type="button" id="baselineBtn">Run Baseline</button>
+    </fieldset>
+  </form>
+
+  <hr>
+
+  <section id="output">
+    <h2>Result</h2>
+    <p>Submit a profile to see results.</p>
+  </section>
+
+</body>
+</html>
