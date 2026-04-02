@@ -52,6 +52,61 @@ function renderBaseline(data) {
   `;
 }
 
+function renderAllMatches(data) {
+  const topMatches = data.matches.map((match, idx) => {
+    const badge = match.status === "eligible"
+      ? "✅"
+      : match.status === "partially eligible"
+        ? "⚠️"
+        : "❌";
+    const reason = match.failed_reasons.length > 0
+      ? `<span>${match.failed_reasons.join("; ")}</span>`
+      : "";
+
+    return `
+      <li>
+        <strong>${match.scheme_name}</strong> → ${match.status} ${badge}
+        <p><em>Summary:</em> ${match.llm_explanation || "(not available)"}</p>
+        <details>
+          <summary>View rule details</summary>
+          <pre>${match.structured_explanation}</pre>
+        </details>
+      </li>
+    `;
+  }).join("");
+
+  const categories = (group, title) => {
+    const items = data.groups[group];
+    if (!items || items.length === 0) {
+      return `<p><em>No ${title.toLowerCase()}.</em></p>`;
+    }
+    return `
+      <ul>
+        ${items.map(item => `
+          <li>
+            <strong>${item.scheme_name}</strong> → ${item.status}
+            ${item.failed_reasons.length > 0 ? `<div>${item.failed_reasons.join("; ")}</div>` : ""}
+          </li>
+        `).join("")}
+      </ul>
+    `;
+  };
+
+  return `
+    <h2>Top Matches</h2>
+    <ol>${topMatches}</ol>
+
+    <h3>Eligible schemes</h3>
+    ${categories("eligible", "Eligible")}
+
+    <h3>Partially eligible schemes</h3>
+    ${categories("partially_eligible", "Partially Eligible")}
+
+    <h3>Not eligible schemes</h3>
+    ${categories("not_eligible", "Not Eligible")}
+  `;
+}
+
 async function postRequest(endpoint, payload) {
   const res = await fetch(`${API}${endpoint}`, {
     method: "POST",
@@ -95,6 +150,20 @@ async function handleEvaluate(e) {
   }
 }
 
+async function handleEvaluateAll() {
+  try {
+    updateUI("<p>Loading...</p>");
+
+    const profile = buildProfile();
+    const data = await postRequest("/evaluate_all", { profile });
+
+    updateUI(renderAllMatches(data));
+
+  } catch (err) {
+    updateUI(`<p>Error: ${err.message}</p>`);
+  }
+}
+
 async function handleBaseline() {
   try {
     updateUI("<p>Loading...</p>");
@@ -121,4 +190,5 @@ async function handleBaseline() {
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("form").addEventListener("submit", handleEvaluate);
   document.getElementById("baselineBtn").addEventListener("click", handleBaseline);
+  document.getElementById("evaluateAllBtn").addEventListener("click", handleEvaluateAll);
 });
