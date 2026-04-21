@@ -3,40 +3,78 @@
   "unparsable": 0,
   "proposed_accuracy": 1.0,
   "baseline_accuracy": 0.7701,
-  "baseline_hallucination_rate": 0.2299,
-  "proposed_hallucination_rate": 0.0,
+  "proposed_explanation_hallucination_rate": 0.0,
+  "baseline_decision_hallucination_rate": 0.2299,
   "proposed_faithfulness": 1.0,
   "baseline_faithfulness": 0.9453,
+  "explanation_completeness": 0.9727,
+  "pass_ratio": 0.3167,
+  "not_eligible_ratio": 0.6833,
+  "eligible_count": 197,
+  "not_eligible_count": 425,
+  "avg_explanation_length": 22.89,
+  "min_explanation_length": 15,
+  "max_explanation_length": 31,
   "per_scheme": {
     "Pradhan Mantri Awas Yojana": {
       "total": 126,
+      "proposed_hallucinations": 0,
+      "proposed_explanation_hallucination_rate": 0.0,
+      "proposed_avg_severity": 0.0,
+      "explanation_completeness": 0.8651,
+      "avg_explanation_length": 21.1,
       "baseline_correct": 110,
-      "hallucinations": 16,
-      "baseline_accuracy": 0.873
+      "baseline_accuracy": 0.873,
+      "baseline_hallucinations": 16,
+      "baseline_decision_hallucination_rate": 0.127
     },
     "Ayushman Bharat – PM-JAY": {
       "total": 124,
+      "proposed_hallucinations": 0,
+      "proposed_explanation_hallucination_rate": 0.0,
+      "proposed_avg_severity": 0.0,
+      "explanation_completeness": 1.0,
+      "avg_explanation_length": 24.69,
       "baseline_correct": 92,
-      "hallucinations": 32,
-      "baseline_accuracy": 0.7419
+      "baseline_accuracy": 0.7419,
+      "baseline_hallucinations": 32,
+      "baseline_decision_hallucination_rate": 0.2581
     },
     "National Social Assistance Programme – Old Age Pension": {
       "total": 124,
+      "proposed_hallucinations": 0,
+      "proposed_explanation_hallucination_rate": 0.0,
+      "proposed_avg_severity": 0.0,
+      "explanation_completeness": 1.0,
+      "avg_explanation_length": 25.23,
       "baseline_correct": 112,
-      "hallucinations": 12,
-      "baseline_accuracy": 0.9032
+      "baseline_accuracy": 0.9032,
+      "baseline_hallucinations": 12,
+      "baseline_decision_hallucination_rate": 0.0968
     },
     "Pradhan Mantri Ujjwala Yojana": {
       "total": 124,
+      "proposed_hallucinations": 0,
+      "proposed_explanation_hallucination_rate": 0.0,
+      "proposed_avg_severity": 0.0,
+      "explanation_completeness": 1.0,
+      "avg_explanation_length": 23.46,
       "baseline_correct": 82,
-      "hallucinations": 42,
-      "baseline_accuracy": 0.6613
+      "baseline_accuracy": 0.6613,
+      "baseline_hallucinations": 42,
+      "baseline_decision_hallucination_rate": 0.3387
     },
     "PM-KISAN Samman Nidhi": {
       "total": 124,
+      "proposed_hallucinations": 0,
+      "proposed_explanation_hallucination_rate": 0.0,
+      "proposed_avg_severity": 0.0,
+      "explanation_completeness": 1.0,
+      "avg_explanation_length": 19.99,
       "baseline_correct": 83,
-      "hallucinations": 41,
-      "baseline_accuracy": 0.6694
+      "baseline_accuracy": 0.6694,
+      "baseline_hallucinations": 41,
+      "baseline_decision_hallucination_rate": 0.3306
     }
   },
   "hallucination_cases": [

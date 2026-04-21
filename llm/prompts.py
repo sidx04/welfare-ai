@@ -46,7 +46,8 @@ def build_explanation_prompt(scheme_name: str, evaluation: dict) -> str:
 
     return (
         f"{structured_block}{detail_section}\n"
-        "Using the above information, write 2-3 sentences that clearly state the final eligibility decision, "
-        "the main reason(s) (including the specific condition line if not eligible), and a recommended next step. "
-        "The explanation should be factual, grounded in those rule-engine points, and user-friendly (about 40-70 words)."
+        "Using ONLY the information provided above from the rule engine evaluation, write 2-3 sentences that clearly state the final eligibility decision, "
+        "the main reason(s) (including the specific condition that failed if not eligible), and a recommended next step. "
+        "Do not invent, assume, or mention any additional criteria, benefits, or conditions not explicitly stated in the evaluation. "
+        "Stick strictly to the facts from the rule engine trace."
     )

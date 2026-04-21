@@ -14,7 +14,7 @@ user_profile = {
     "owns_house": False,
     "owns_lpg": False,
     "land_owned_hectares": 1.5,
-    "has_health_insurance": False
+    "has_health_insurance": False,
 }
 
 scheme_id = "pmay"
@@ -24,16 +24,12 @@ scheme = load_scheme(scheme_id)
 llm = Phi3LLM()
 
 
-# ------------------------
-# Proposed System
-# ------------------------
-
 evaluation = evaluate_scheme(user_profile, scheme)
 
-# Deterministic structured block — never touches the LLM
+
 structured_block = format_explanation_block(scheme["scheme_name"], evaluation)
 
-# LLM generates a single explanation sentence
+
 prompt = build_explanation_prompt(scheme["scheme_name"], evaluation)
 llm_sentence = llm.generate(prompt, max_tokens=80)
 full_explanation = llm_sentence.strip()
@@ -47,29 +43,16 @@ print()
 print(full_explanation)
 
 
-# ------------------------
-# Baseline System
-# ------------------------
-
-baseline_output = run_baseline(
-    llm,
-    scheme_id,
-    scheme["scheme_name"],
-    user_profile
-)
+baseline_output = run_baseline(llm, scheme_id, scheme["scheme_name"], user_profile)
 
 print("\n=== Baseline LLM Decision ===")
 print(baseline_output)
 
 
-# ------------------------
-# Experiment Logging
-# ------------------------
-
 model_metadata = {
     "model": "phi-3-mini-4k-instruct-4bit",
     "temperature": 0,
-    "max_tokens": 256
+    "max_tokens": 256,
 }
 
 log_experiment(
@@ -79,5 +62,5 @@ log_experiment(
     rule_engine_result=evaluation,
     proposed_system_explanation=full_explanation,
     baseline_llm_output=baseline_output.strip(),
-    model_metadata=model_metadata
+    model_metadata=model_metadata,
 )

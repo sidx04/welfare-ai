@@ -301,7 +301,7 @@ def main():
 
             # --- Proposed system: LLM-guided explanation ---
             prompt = build_explanation_prompt(scheme["scheme_name"], evaluation)
-            full_explanation = llm.generate(prompt, max_tokens=80).strip()
+            full_explanation = llm.generate(prompt, max_tokens=100).strip()
 
             # --- Baseline: LLM decides eligibility directly ---
             baseline_output = run_baseline(llm, scheme_id, scheme["scheme_name"], profile)

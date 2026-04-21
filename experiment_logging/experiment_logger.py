@@ -2,6 +2,8 @@ import json
 import os
 from datetime import datetime, timezone
 
+from llm.hallucination_detector import HallucinationDetector
+
 
 LOGS_DIR = "logs"
 EXPERIMENTS_LOG = os.path.join(LOGS_DIR, "experiments.jsonl")
@@ -24,11 +26,20 @@ def log_experiment(
     Each record is written as one JSON line (JSONL format) so the
     file remains streamable and pandas-compatible.
 
+    Hallucination detection is automatically run on the proposed explanation
+    and results are included in the record under 'hallucination_analysis'.
+
     Args:
         verbose: If False, suppresses the per-record confirmation print.
                  Set to False during batch sweeps to keep output clean.
     """
     os.makedirs(LOGS_DIR, exist_ok=True)
+
+    detector = HallucinationDetector()
+    trace = rule_engine_result.get("trace", [])
+    hallucination_result = detector.detect_hallucinations(
+        proposed_system_explanation, trace
+    )
 
     record = {
         "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -39,6 +50,7 @@ def log_experiment(
         "proposed_system_explanation": proposed_system_explanation,
         "baseline_llm_output": baseline_llm_output,
         "model_metadata": model_metadata,
+        "hallucination_analysis": hallucination_result,
     }
 
     with open(EXPERIMENTS_LOG, "a", encoding="utf-8") as f:
